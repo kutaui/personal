@@ -1,0 +1,5 @@
+User-agent: *
+
+Disallow: /*.js$
+Disallow: /*.json
+Sitemap: https://kutay.boo/sitemap-index.xml

@@ -1,11 +1,38 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
+import remarkToc from 'remark-toc';
+import rehypePresetMinify from 'rehype-preset-minify';
 
 import sitemap from '@astrojs/sitemap';
 
+import tailwind from '@astrojs/tailwind';
+import {
+    transformerNotationDiff,
+    transformerNotationHighlight,
+    transformerNotationErrorLevel
+} from '@shikijs/transformers'
+
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://example.com',
-	integrations: [mdx(), sitemap()],
+    site: 'https://kutay.boo',
+    markdown: {
+        shikiConfig: {
+            theme: 'dracula',
+            defaultColor: false,
+            wrap: true,
+            transformers: [
+                transformerNotationDiff(),
+                transformerNotationHighlight(),
+                transformerNotationErrorLevel(),
+            ],
+        },
+        remarkPlugins: [remarkToc],
+        remarkRehype: { footnoteLabel: 'Footnotes' },
+        gfm: true,
+    },
+    integrations: [mdx({
+        rehypePlugins: [rehypePresetMinify],
+        gfm: false,
+    }), sitemap(), tailwind()],
 });

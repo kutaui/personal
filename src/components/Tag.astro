@@ -1,0 +1,17 @@
+---
+type Props = {
+	title: string
+	link: string
+	count?: number
+}
+
+const { title, link, count } = Astro.props
+---
+
+<a
+	href={link}
+	class="flex items-center justify-center rounded-xl px-4 py-1 text-soft text-lg font- no-underline bg-gray-500 text-white/70"
+>
+	{title}
+	{count}
+</a>
