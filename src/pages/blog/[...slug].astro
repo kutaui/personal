@@ -1,108 +1,20 @@
 ---
 import { type CollectionEntry, getCollection } from 'astro:content'
-import BaseHead from '../../components/BaseHead.astro'
-import Footer from '../../components/Footer.astro'
-import FormattedDate from '../../components/FormattedDate.astro'
-import Header from '../../components/Header.astro'
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts'
-import Tag from '../../components/Tag.astro'
+import BlogPost from '../../layouts/BlogPost.astro'
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog')
-
-	// Collect unique tags from all posts
-	const uniqueTags = [...new Set(posts.flatMap((post) => post.data.tags))]
-
-	// Generate a static path for each unique tag
-	return uniqueTags.map((tag) => ({
-		params: { tag },
-		props: { tag }, // Pass the tag as a prop
+	return posts.map((post) => ({
+		params: { slug: post.slug },
+		props: post,
 	}))
 }
+type Props = CollectionEntry<'blog'>
 
-type Props = {
-	tag: string
-}
-
-const { tag } = Astro.props
-
-// Fetch all posts and filter for the current tag
-const posts = (await getCollection('blog'))
-	.filter((post) => post.data.published && post.data.tags.includes(tag))
-	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-
-// Calculate tag counts for displaying in the tag list
-const tagCounts = posts
-	.flatMap((post) => post.data.tags)
-	.reduce(
-		(acc: Record<string, number>, tag: string) => {
-			acc[tag] = (acc[tag] || 0) + 1
-			return acc
-		},
-		{} as Record<string, number>
-	)
-
-const uniqueTags = Object.keys(tagCounts)
+const post = Astro.props
+const { Content } = await post.render()
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={`${tag} - ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
-	</head>
-	<body class="">
-		<Header />
-		<main class="gutter mx-auto w-full max-w-[1024px] px-12 lg:px-0">
-			<section>
-				<div class="flex justify-center items-center flex-col mb-10">
-					<h3 class="mb-4 text-xl font-sans font-bold">Tags:</h3>
-					<div class="flex w-full flex-wrap gap-4">
-						{
-							uniqueTags.map((tag) => (
-								<Tag
-									link={`/blog/tags/${tag}`}
-									title={tag}
-									count={tagCounts[tag]}
-								/>
-							))
-						}
-					</div>
-				</div>
-				<hr class="m-8" />
-				<h3 class="mb-8 text-2xl font-sans font-bold">
-					{`Posts tagged with "${tag}"`}
-				</h3>
-				<ul class="flex flex-col list-none p-0">
-					{
-						posts.length > 0 ? (
-							posts.map((post) => (
-								<li class="mb-8">
-									<a
-										href={`/blog/${post.slug}`}
-										class="w-full relative py-1 text-3xl md:text-3xl font-semibold no-underline hover:opacity-70"
-									>
-										<span class="mr-1">{`>>`}</span>
-										{post.data.title}
-									</a>
-									<div class="flex flex-wrap items-center my-2">
-										<p class="text-sm md:text-md font-semibold text-soft">
-											<FormattedDate date={post.data.date} />
-										</p>
-									</div>
-									<p class="text-lg md:text-xl text-soft w-[85%] font-serif">
-										{post.data.description}
-									</p>
-								</li>
-							))
-						) : (
-							<p class="text-lg font-sans text-center">
-								No posts found for this tag.
-							</p>
-						)
-					}
-				</ul>
-			</section>
-		</main>
-		<Footer />
-	</body>
-</html>
+<BlogPost {...post.data}>
+	<Content />
+</BlogPost>
