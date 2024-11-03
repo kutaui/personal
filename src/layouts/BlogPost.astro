@@ -87,9 +87,9 @@ const tagCounts = posts
 					<slot />
 				</div>
 			</article>
-			<div class="mt-20 gutter mx-auto w-[70ch]">
-				<p>Tags:</p>
-				<div class="h-10 flex gap-4 items-center">
+			<div class="mt-20 px-8 md:p-0 gutter mx-auto max-w-[70ch]">
+				<p class="inline-block">Tags:</p>
+				<div class="h-10 flex gap-4 flex-wrap items-center md:mb-0 mb-24">
 					{
 						tags &&
 							tags.map((tag) => (
