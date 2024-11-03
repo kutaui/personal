@@ -1,38 +1,22 @@
+version: '3.8'
 services:
-  traefik:
-    image: traefik:v2.10
-    command:
-      - '--providers.docker=true'
-      - '--entrypoints.web.address=:80'
-      - '--entrypoints.websecure.address=:443'
-      - '--entrypoints.web.forwardedheaders.trustedips=0.0.0.0/0'
-      - '--entrypoints.websecure.forwardedheaders.trustedips=0.0.0.0/0'
-      - '--certificatesresolvers.myresolver.acme.httpchallenge=true'
-      - '--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web'
-      - '--certificatesresolvers.myresolver.acme.email=hi@kutaybekleric.com'
-      - '--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json'
-    ports:
-      - '80:80'
-      - '443:443'
-    volumes:
-      - '/var/run/docker.sock:/var/run/docker.sock:ro'
-      - './letsencrypt:/letsencrypt'
-    networks:
-      - app-network
-
   frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: kutaui/personal:latest
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.frontend.rule=Host(`kutay.boo`)'
-      - 'traefik.http.routers.frontend.entrypoints=websecure'
-      - 'traefik.http.routers.frontend.tls.certresolver=myresolver'
-      - 'traefik.http.services.frontend.loadbalancer.server.port=4321'
-    networks:
-      - app-network
-
+      # HTTP router with unique name
+      - 'traefik.http.routers.blog-http.rule=Host(`kutay.boo`)'
+      - 'traefik.http.routers.blog-http.entrypoints=web'
+      - 'traefik.http.middlewares.blog-redirect-https.redirectscheme.scheme=https'
+      - 'traefik.http.routers.blog-http.middlewares=blog-redirect-https'
+      # HTTPS router with unique name
+      - 'traefik.http.routers.blog.rule=Host(`kutay.boo`)'
+      - 'traefik.http.routers.blog.entrypoints=websecure'
+      - 'traefik.http.routers.blog.tls=true'
+      - 'traefik.http.routers.blog.tls.certresolver=myresolver'
+      - 'traefik.http.services.blog.loadbalancer.server.port=4321'
+  networks:
+      - traefik-network
   watchtower:
     image: containrrr/watchtower
     volumes:
@@ -42,8 +26,7 @@ services:
       - WATCHTOWER_POLL_INTERVAL=300
     restart: always
     networks:
-      - app-network
-
+      - traefik-network
 networks:
-  app-network:
-    driver: bridge
+  traefik-network:
+    external: true
