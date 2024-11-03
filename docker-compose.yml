@@ -1,0 +1,49 @@
+services:
+  traefik:
+    image: traefik:v2.10
+    command:
+      - '--providers.docker=true'
+      - '--entrypoints.web.address=:80'
+      - '--entrypoints.websecure.address=:443'
+      - '--entrypoints.web.forwardedheaders.trustedips=0.0.0.0/0'
+      - '--entrypoints.websecure.forwardedheaders.trustedips=0.0.0.0/0'
+      - '--certificatesresolvers.myresolver.acme.httpchallenge=true'
+      - '--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web'
+      - '--certificatesresolvers.myresolver.acme.email=hi@kutaybekleric.com'
+      - '--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json'
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+      - './letsencrypt:/letsencrypt'
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.frontend.rule=Host(`kutay.boo`)'
+      - 'traefik.http.routers.frontend.entrypoints=websecure'
+      - 'traefik.http.routers.frontend.tls.certresolver=myresolver'
+      - 'traefik.http.services.frontend.loadbalancer.server.port=4321'
+    networks:
+      - app-network
+
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=300
+    restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

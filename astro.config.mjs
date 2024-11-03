@@ -13,26 +13,36 @@ import {
     transformerNotationErrorLevel
 } from '@shikijs/transformers'
 
+import node from '@astrojs/node';
+
 // https://astro.build/config
 export default defineConfig({
-    site: 'https://kutay.boo',
-    markdown: {
-        shikiConfig: {
-            theme: 'dracula',
-            defaultColor: false,
-            wrap: true,
-            transformers: [
-                transformerNotationDiff(),
-                transformerNotationHighlight(),
-                transformerNotationErrorLevel(),
-            ],
-        },
-        remarkPlugins: [remarkToc],
-        remarkRehype: { footnoteLabel: 'Footnotes' },
-        gfm: true,
-    },
-    integrations: [mdx({
-        rehypePlugins: [rehypePresetMinify],
-        gfm: false,
-    }), sitemap(), tailwind()],
+  site: 'https://kutay.boo',
+
+  markdown: {
+      shikiConfig: {
+          theme: 'dracula',
+          defaultColor: false,
+          wrap: true,
+          transformers: [
+              transformerNotationDiff(),
+              transformerNotationHighlight(),
+              transformerNotationErrorLevel(),
+          ],
+      },
+      remarkPlugins: [remarkToc],
+      remarkRehype: { footnoteLabel: 'Footnotes' },
+      gfm: true,
+  },
+
+  integrations: [mdx({
+      rehypePlugins: [rehypePresetMinify],
+      gfm: false,
+  }), sitemap(), tailwind()],
+
+  output: 'server',
+
+  adapter: node({
+    mode: 'standalone'
+  })
 });
