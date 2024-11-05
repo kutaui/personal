@@ -2,21 +2,11 @@ version: '3.8'
 services:
   frontend:
     image: kutaui/personal:latest
-    labels:
-      - 'traefik.enable=true'
-      # HTTP router with unique name
-      - 'traefik.http.routers.blog-http.rule=Host(`kutay.boo`)'
-      - 'traefik.http.routers.blog-http.entrypoints=web'
-      - 'traefik.http.middlewares.blog-redirect-https.redirectscheme.scheme=https'
-      - 'traefik.http.routers.blog-http.middlewares=blog-redirect-https'
-      # HTTPS router with unique name
-      - 'traefik.http.routers.blog.rule=Host(`kutay.boo`)'
-      - 'traefik.http.routers.blog.entrypoints=websecure'
-      - 'traefik.http.routers.blog.tls=true'
-      - 'traefik.http.routers.blog.tls.certresolver=myresolver'
-      - 'traefik.http.services.blog.loadbalancer.server.port=4321'
     networks:
-      - traefik-network
+      - watchtower-network
+    container_name: portfolio_ blog
+    ports:
+      - "4321:4321"
 
   watchtower:
     image: containrrr/watchtower
@@ -27,7 +17,9 @@ services:
       - WATCHTOWER_POLL_INTERVAL=300
     restart: always
     networks:
-      - traefik-network
+      - watchtower-network
+    command: --cleanup portfolio_blog
+
 networks:
-  traefik-network:
+  watchtower-network:
     external: true
