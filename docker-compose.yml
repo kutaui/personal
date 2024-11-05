@@ -15,8 +15,9 @@ services:
       - 'traefik.http.routers.blog.tls=true'
       - 'traefik.http.routers.blog.tls.certresolver=myresolver'
       - 'traefik.http.services.blog.loadbalancer.server.port=4321'
-  networks:
+    networks:
       - traefik-network
+
   watchtower:
     image: containrrr/watchtower
     volumes:
