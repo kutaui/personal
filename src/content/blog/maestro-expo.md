@@ -10,6 +10,8 @@ published: false
 
 This tutorial will not explain how to use Maestro or how to write tests with it. It will only explain how to run the tests with Expo. If you want to learn how to use Maestro, you can check the [official documentation](https://maestro.mobile.dev/).
 
+There are two ways you can run Maestro tests with Expo, you can use `expo prebuild` or you can use `eas build`. We will cover both ways in this tutorial. There are some differences between the two, but in this context the one we care about is that while `expo prebuild` gives you native code while still in development, `eas build` compiles/builds app binaries so that is why you need the development client.
+
 ## Prerequisites
 
 You are going to need a linux or a apple machine to run the tests. You can also use a windows machine, but you will need to use WSL2 and it requires more configuration. This tutorial will cover macOs but the steps are similar for linux.
@@ -36,6 +38,26 @@ I made a simple project to demonstrate how to run the tests with Expo. You can f
 ```bash
 git clone -b starter https://github.com/kutaui/expo-maestro.git
 ```
+
+# With `expo prebuild`
+
+After you have cloned the project, you can run the following command to build the project for IOS or Android.
+
+```bash
+npx expo prebuild
+```
+
+This command will ask you for your desired Android package name and IOS bundle identifier. You can use the default values if you want.
+
+After the installation is done you can start your android or IOS emulator and run the following command to install and start the app.
+
+```bash
+npm run android  // or ios
+```
+
+After the app is running you can skip the `eas build` section and go directly to the [`Running the tests`](#running-the-tests) section.
+
+# With `eas build`
 
 Login to your expo account
 
@@ -124,7 +146,7 @@ xcrun simctl install booted maestrotutorial.app
 
 For the android you just need to drag and drop the apk to emulator.
 
-## Running the tests
+# Running the tests
 
 Now you need to create your test file, you can name it whatever you want. I usually store it inside the `.maestro` folder. Here is a working test for our example project.
 
