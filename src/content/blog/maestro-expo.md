@@ -1,20 +1,22 @@
 ---
-title: Guide to running Maestro end to end tests with Expo
+title: Run Maestro end to end tests with Expo
 description: Learn how you can run your Maestro tests with expo for both Android and IOS.
-date: 'Nov 04 2024'
+date: 'Dec 24 2024'
 tags:
   - mobile
   - testing
-published: false
+published: true
 ---
 
 This tutorial will not explain how to use Maestro or how to write tests with it. It will only explain how to run the tests with Expo. If you want to learn how to use Maestro, you can check the [official documentation](https://maestro.mobile.dev/).
 
 There are two ways you can run Maestro tests with Expo, you can use `expo prebuild` or you can use `eas build`. We will cover both ways in this tutorial. There are some differences between the two, but in this context the one we care about is that while `expo prebuild` gives you native code while still in development, `eas build` compiles/builds app binaries so that is why you need the development client.
 
+I also made a video out of this blog post, you can check it out [here](https://www.youtube.com/watch?v=QGOAQVSxpDE).
+
 ## Prerequisites
 
-You are going to need a linux or a apple machine to run the tests. You can also use a windows machine, but you will need to use WSL2 and it requires more configuration. This tutorial will cover macOs but the steps are similar for linux.
+You are going to need a linux or a macOS machine to run the tests. You can also use a windows machine, but you will need to use WSL2 and it requires more configuration. This tutorial will cover macOS but the steps are similar for linux.
 
 Make sure you have the following installed, I assume you already have your mobile environment set up.
 
@@ -25,10 +27,10 @@ brew tap mobile-dev-inc/tapF
 brew install maestro
 ```
 
-- Expo CLI
+- Eas CLI
 
 ```bash
-npm install -g expo-cli
+npm install -g eas-cli
 ```
 
 ## Setting up the project
@@ -84,13 +86,6 @@ Now we need to add a custom profile to `eas.json` so we can run a development bu
 			"developmentClient": true,
 			"distribution": "internal"
 		},
-		"development-simulator": {
-			"developmentClient": true,
-			"distribution": "internal",F
-			"ios": {
-				"simulator": true
-			}
-		},
 		"preview": {
 			"distribution": "internal"
 		},
@@ -115,7 +110,7 @@ npx expo install expo-dev-client
 Now we need to build the project with the development profile for IOS or Android. You can run the following command to build the project for IOS.
 
 ```bash
-eas build --profile development-simulator --platform ios --local
+eas build --profile development --platform ios --local
 ```
 
 Or for Android
@@ -144,7 +139,7 @@ Then install the app on the simulator with:
 xcrun simctl install booted maestrotutorial.app
 ```
 
-For the android you just need to drag and drop the apk to emulator.
+For the android you just need to drag and drop the APK to emulator.
 
 # Running the tests
 
