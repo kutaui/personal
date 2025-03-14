@@ -1,72 +1,73 @@
 ---
-import { getCollection } from 'astro:content'
-import BaseHead from '../components/BaseHead.astro'
-import Footer from '../components/Footer.astro'
-import Header from '../components/Header.astro'
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts'
+import { getCollection } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 
-const blogPosts = (await getCollection('blog'))
-	.filter((post) => post.data.published)
-	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+const blogPosts = (await getCollection("blog"))
+  .filter((post) => post.data.published)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-const latestBlogPost = blogPosts[0]
+const latestBlogPost = blogPosts[0];
 
-const projects = (await getCollection('projects'))
-	.filter((post) => post.data)
-	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+const projects = (await getCollection("projects"))
+  .filter((post) => post.data)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-const latestProject = projects[0]
+const latestProject = projects[0];
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main class="gutter mx-auto w-full max-w-[1024px]">
-			<section class="flex gap-4">
-				<img src="/meta/berserk.jpg" alt="" class="w-80 h-[28rem] border" />
-				<div class="flex flex-col gap-8">
-					<h1 class="text-4xl">I'm Kutay</h1>
-					<p>
-						I make
-						<a
-							href="https://www.youtube.com/@kutaui"
-							class="font-semibold underline italic"
-							target="_blank">YouTube</a
-						>
-						videos related to software development. I also <a
-							href="/blog"
-							class="font-semibold underline italic">write</a
-						> and have some open source <a
-							href="/projects"
-							class="font-semibold underline italic">projects</a
-						>.
-					</p>
-					<div class="flex flex-col gap-8 mt-16">
-						<a
-							href={`/blog/${latestBlogPost.slug}`}
-							class="text-3xl mb-4 font-semibold hover:underline"
-							>Latest Blog Post</a
-						>
-						<a
-							href={latestProject.data.source}
-							target="_blank"
-							class="text-3xl mb-4 font-semibold hover:underline"
-							>Latest Project</a
-						>
-						<a
-							href='https://www.youtube.com/watch?v=QGOAQVSxpDE'
-							target="_blank"
-							class="text-3xl mb-4 font-semibold hover:underline"
-							>Latest Video</a
-						>
-					</div>
-				</div>
-			</section>
-			<Footer />
-		</main>
-	</body>
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <script defer src="https://umami.kutay.boo/script.js" data-website-id="52a4f99e-60da-46a4-b1d8-bc5a1aa434a6"></script>
+  </head>
+  <body>
+    <Header />
+    <main class="gutter mx-auto w-full max-w-[1024px]">
+      <section class="flex gap-4">
+        <img src="/meta/berserk.jpg" alt="" class="w-80 h-[28rem] border" />
+        <div class="flex flex-col gap-8">
+          <h1 class="text-4xl">I'm Kutay</h1>
+          <p>
+            I make
+            <a
+              href="https://www.youtube.com/@kutaui"
+              class="font-semibold underline italic"
+              target="_blank">YouTube</a
+            >
+            videos related to software development. I also <a
+              href="/blog"
+              class="font-semibold underline italic">write</a
+            > and have some open source <a
+              href="/projects"
+              class="font-semibold underline italic">projects</a
+            >.
+          </p>
+          <div class="flex flex-col gap-8 mt-16">
+            <a
+              href={`/blog/${latestBlogPost.slug}`}
+              class="text-3xl mb-4 font-semibold hover:underline"
+              >Latest Blog Post</a
+            >
+            <a
+              href={latestProject.data.source}
+              target="_blank"
+              class="text-3xl mb-4 font-semibold hover:underline"
+              >Latest Project</a
+            >
+            <a
+              href="https://www.youtube.com/watch?v=HbqAFvu0Syk"
+              target="_blank"
+              class="text-3xl mb-4 font-semibold hover:underline"
+              >Latest Video</a
+            >
+          </div>
+        </div>
+      </section>
+      <Footer />
+    </main>
+  </body>
 </html>
