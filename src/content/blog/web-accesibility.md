@@ -114,7 +114,7 @@ terms, unchecked, checkbox”. This looks good for a starting point.
 There is also an attribute called aria-labelledby which is used to label an element by another
 element.
 
-![Code screenshot explaning 'aria-labelledby'](/img1.webp)
+![Code screenshot explaning 'aria-labelledby'](/blog/img1.webp)
 
 There is a lot to cover, even for a fundamental introduction but I will leave some resources to
 where to go from here, and in the next article, we will go deep with how to use accessibility in

@@ -3,8 +3,9 @@ title: Run Maestro end to end tests with Expo
 description: Learn how you can run your Maestro tests with expo for both Android and IOS.
 date: 'Dec 24 2024'
 tags:
-  - mobile
   - testing
+  - expo
+  - react-native
 published: true
 ---
 
@@ -77,25 +78,25 @@ Now we need to add a custom profile to `eas.json` so we can run a development bu
 
 ```json
 {
-	"cli": {
-		"version": ">= 12.6.2",
-		"appVersionSource": "remote"
-	},
-	"build": {
-		"development": {
-			"developmentClient": true,
-			"distribution": "internal"
-		},
-		"preview": {
-			"distribution": "internal"
-		},
-		"production": {
-			"autoIncrement": true
-		}
-	},
-	"submit": {
-		"production": {}
-	}
+ "cli": {
+  "version": ">= 12.6.2",
+  "appVersionSource": "remote"
+ },
+ "build": {
+  "development": {
+   "developmentClient": true,
+   "distribution": "internal"
+  },
+  "preview": {
+   "distribution": "internal"
+  },
+  "production": {
+   "autoIncrement": true
+  }
+ },
+ "submit": {
+  "production": {}
+ }
 }
 ```
 
