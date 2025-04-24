@@ -12,7 +12,7 @@ Ever wondered how you can add custom shortcuts to your Expo applications? The `e
 
 ![Screenshot showing quick actions for an ios app](/blog/expo-quick-action.png)
 
-I also made a video out of this blog post, you can check it out [here](https://studio.youtube.com/video/HbqAFvu0Syk).
+I also made a video out of this blog post, you can check it out [here](https://www.youtube.com/watch?v=HbqAFvu0Syk).
 
 ## How to add your own menu option with expo-quick actions
 
